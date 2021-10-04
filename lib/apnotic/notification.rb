@@ -4,7 +4,8 @@ module Apnotic
 
   class Notification < AbstractNotification
     attr_accessor :alert, :badge, :sound, :content_available, :category, :custom_payload, :url_args, :mutable_content, :thread_id
-
+    attr_accessor :target_content_id, :interruption_level, :relevance_score
+    
     def background_notification?
       aps[:aps].count == 1 && aps[:aps].key?('content-available') && aps[:aps]['content-available'] == 1
     end
@@ -24,6 +25,9 @@ module Apnotic
         result['url-args'] = url_args if url_args
         result['mutable-content'] = mutable_content if mutable_content
         result.merge!('thread-id' => thread_id) if thread_id
+        result.merge!('target-content-id' => target_content_id) if target_content_id
+        result.merge!('interruption-level' => interruption_level) if interruption_level
+        result.merge!('relevance-score' => relevance_score) if relevance_score
       end
       r
     end
